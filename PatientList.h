@@ -32,19 +32,19 @@ class PatientTree
         int countDonors();
         void printDonors();
         void printPatients();
-        void printMatches();
-        void Operate();
+        void printMatches(); //prints all of the matches with patients and donors that have been made
+        void Operate(); //operates and outputs results
 
 
     protected:
 
     private:
-        void buildPatientList();
-        void buildDonorList();
-        void buildGraph();
-        void findShortestPath();
-        void findMatch();
-        void chooseMatch();
+        void buildPatientList(); //builds empty patient list
+        void buildDonorList(); //builds empty donor list
+        void buildGraph(); //builds graph with cities
+        void findShortestPath(); //finds shortest path between two cities
+        void findMatch(); //finds all possible patient donor matches
+        void chooseMatch(); //chooses best patient doner match
 
 };
 
