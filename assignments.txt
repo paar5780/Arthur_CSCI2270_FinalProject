@@ -1,0 +1,5 @@
+Michael- PrintMatches, Operate, findMatch, chooseMatch
+
+Paige- buildGraph, findShortestPath, coutPatients, countDonors, printPatients, printDonors
+
+Evan- buildPatientList, buildDonorList, addPatient, addDonor, deletePatient, deleteDonor
