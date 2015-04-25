@@ -121,7 +121,7 @@ void PatientList::buildGraph(){
   g.addEdge("Boston", "New York City", 1);
 }
 
-void Dijkstra(int count, std::string starting, std::string destination){
+int Dijkstra(int count, std::string starting, std::string destination){
 
     int minDistance;
     vertex* minVertex;
@@ -183,6 +183,7 @@ void Dijkstra(int count, std::string starting, std::string destination){
     }
 
     cout << minDistance << ","; //print minimum distance
+    return minDistance;
 
 	//print path by going through vector in reverse
 	//since the path was added to the vector in reverse in the first place
@@ -195,14 +196,15 @@ void Dijkstra(int count, std::string starting, std::string destination){
 }
 
 
-void findShortestDistance(int count, string city1, string city2){
+int findShortestDistance(int count, string city1, string city2){
   //check the two cities
   bool cont = checkCities(count, city1, city2);
   if (cont == false){
   	return;
   }
   //use Dijkstra traverse to find and print the shortest distance
-  Dijkstra(count, city1, city2);
+  int distance = Dijkstra(count, city1, city2);
+  return distance;
   cout << endl;
 }
 
