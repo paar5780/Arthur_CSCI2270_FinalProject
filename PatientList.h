@@ -2,11 +2,12 @@
 #define PATIENTLIST_H
 
 struct Donor{
-  std::string name;
-  std::string organ;
-  std::string blood_type;
-  std::string location;
-
+    std::string name;
+    std::string organ;
+    std::string blood_type;
+    std::string location;
+    *Donor next;
+    *Donor prev;
 };
 
 struct Patient{
@@ -16,7 +17,10 @@ struct Patient{
     int survivability;
     std::string location;
     int time_left;
+    *Patient next;
+    *Patient prev;
 };
+
 
 class PatientTree
 {
@@ -24,6 +28,7 @@ class PatientTree
     public:
         PatientTree();
         virtual ~PatientTree();
+        Patient *PatientList[7][4];
         void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left);
         void addDonor(std::string name, std::string organ, std::string blood_type, std:: string city);
         void deletePatient(std::string name);
@@ -47,5 +52,4 @@ class PatientTree
         void chooseMatch(); //chooses best patient doner match
 
 };
-
 #endif // MOVIETREE_H
