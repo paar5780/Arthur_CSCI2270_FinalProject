@@ -45,12 +45,15 @@ class PatientTree
     protected:
 
     private:
+        void addVertex(std::string city);
+        void addEdge(std::string starting_city, std::string ending_city, int weight);
         void buildPatientList(); //builds empty patient list
         void buildDonorList(); //builds empty donor list
         void buildGraph(); //builds graph with cities
-        void findShortestPath(); //finds shortest path between two cities
+        void findShortestDistance(std::string starting_city, std::string ending_city); //finds shortest path between two cities
         void findMatch(); //finds all possible patient donor matches
         void chooseMatch(); //chooses best patient doner match
+        void Dijkstra(int count, std::string starting, std::string destination){
 
 };
 #endif // MOVIETREE_H
