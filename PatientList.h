@@ -30,7 +30,7 @@ class PatientTree
         virtual ~PatientTree();
         Patient *PatientList[7][4];
         Donor *DonorList[7][4];
-        void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left);
+        void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left, survivability);
         void addDonor(std::string name, std::string organ, std::string blood_type, std:: string city);
         void deletePatient(std::string name);
         void deleteDonor(std::string name);
