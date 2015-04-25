@@ -65,7 +65,15 @@ void PatientList::buildGraph(){
 	g.addVertex("Dallas");
 	g.addVertex("Phoenix");
   g.addVertex("Seattle");
-  g.addVertex("Honolulu")
+  g.addVertex("Honolulu");
+  g.addVertex("Chicago");
+  g.addVertex("Detroit");
+  g.addVertex("Los Angeles");
+  g.addVertex("Houston");
+  g.addVertex("Miami");
+  g.addVertex("Memphis");
+  g.addVertex("Cleveland");
+  g.addVertex("Boise");
   //edge written to be undirected
   g.addEdge("Boston", "New York City", 2);
 	g.addEdge("Boston", "Philadelphia", 5);
@@ -81,6 +89,8 @@ void PatientList::buildGraph(){
 	g.addEdge("Honolulu", "San Francisco", 25);
 	g.addEdge("Dallas", "Phoenix", 7);
 	g.addEdge("Seattle", "Denver", 9);
+  g.addEdge("Chicago", "Boston", 3);
+  g.addEdge("Detriot", "New York City", 5);
 }
 
 void Dijkstra(int count, std::string starting, std::string destination){
@@ -171,25 +181,93 @@ void findShortestDistance(int count, string city1, string city2){
 int countPatients(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
+  node* x;
+  int count = 0;
 
-  Patient* patientList[4] //array of pointers to head nodes of linked list
-
-
-
-  for (int o = 0; o < 6; o++){
+  //iterate through organs
+  for (int i = 0; i < 7; i++){
+    //iterate through blood types
+    for (int j = 0; j < 4; j++){
+      if (PatientList[i][j] != NULL){
+        count ++;
+        x = PatientList[i][j]; //head of linked list
+        //iterate through patients
+        while (x->next != NULL){
+          count++;
+          x = x->next;
+        }
+    }
 
   }
 
 }
 
 int countDonors(){
+  //organs: heart, kidney, liver, lungs, pancreas, intestines, head
+  //blood tyes: O, A, B, AB
+  node* x;
+  int count = 0;
+
+  //iterate through organs
+  for (int i = 0; i < 7; i++){
+    //iterate through blood types
+    for (int j = 0; j < 4; j++){
+      if (DonorList[i][j] != NULL){
+        count ++;
+        x = DonorList[i][j]; //head of linked list
+        //iterate through patients
+        while (x->next != NULL){
+          count++;
+          x = x->next;
+        }
+    }
+
+  }
 
 }
 
 void printPatients(){
+  //organs: heart, kidney, liver, lungs, pancreas, intestines, head
+  //blood tyes: O, A, B, AB
+  node* x;
+
+  //iterate through organs
+  for (int i = 0; i < 7; i++){
+    //iterate through blood types
+    for (int j = 0; j < 4; j++){
+      if (PatientList[i][j] != NULL){
+        x = PatientList[i][j]; //head of linked list
+        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->surviability << " chance of survival - " << x->time_left << " hours left" << endl;
+        //iterate through patients
+        while (x->next != NULL){
+          x = x->next;
+          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->surviability << " chance of survival - " << x->time_left << " hours left" << endl;
+        }
+    }
+
+  }
 
 }
 
 void printDonors(){
+  //organs: heart, kidney, liver, lungs, pancreas, intestines, head
+  //blood tyes: O, A, B, AB
+  node* x;
+
+  //iterate through organs
+  for (int i = 0; i < 7; i++){
+    //iterate through blood types
+    for (int j = 0; j < 4; j++){
+      if (DonorList[i][j] != NULL){
+        x = DonorList[i][j]; //head of linked list
+        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << endl;
+        //iterate through patients
+        while (x->next != NULL){
+          x = x->next;
+          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << endl;
+        }
+    }
+
+  }
 
 }
