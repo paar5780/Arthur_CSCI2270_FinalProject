@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <limits.h>
+#include <string>
 #include "PatientList.h"
 
 
@@ -298,6 +299,197 @@ void printDonors(){
         }
     }
 
+  }
+
+}
+
+Patient* findPatientMatch(Donor* d){
+  int js[4];
+  for (int k = 0; k < 4; k++){
+    js[k] = 0;
+  }
+
+  if(d->blood_type==1){
+    js[0] = 1;
+    js[1] = 3;
+  }
+  if(d->blood_type==1){
+    js[0] = 2;
+    js[1] = 3;
+  }
+  if(d->blood_type==3){
+    js[0] = 3;
+  }
+  if(d->blood_type==4){
+    js[0] = 1;
+    js[1] = 2;
+    js[2] = 3;
+    js[3] = 4;
+  }
+
+  int best_score = INT_MIN;
+  node* best = NULL;
+  int count = 0;
+  int score;
+  int time_taken;
+
+  int m = 0;
+  while (int js[m] != 0){
+    Patient* p = PatientList[d->organ][js[m]];
+    while (p->next != NULL){
+      count++; //relative time on waiting list
+      time_taken = findShortestDistance(p->location, d->location);
+      if (p->time_left >= time_taken){
+        score = survivability - count;
+        if (score > best_score){
+          best_score = score;
+          best = p;
+        }
+      }
+    }
+  }
+
+  void PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
+      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
+      + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
+      if(i == 0){
+          cout << "Organ not found" << endl;
+          return;
+      }
+      int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
+      if(j == 0){
+          cout << "Blood type not found" << endl;
+          return;
+      }
+
+      Patient *n = new Patient;
+      n->name = name;
+      n->organ = i;
+      n->blood_type = j;
+      n->location = city;
+      n->next = NULL;
+      n->prev = NULL;
+      Patient *x = PatientList[i][j];
+      if(x == NULL){
+          PatientList[i][j] = n;
+          return;
+      }
+      while(x->next != NULL){
+          x = x->next;
+      }
+      n->prev = x;
+      x->next = n;
+  }
+
+  void PatientTree::addDonor(string name, string organ, string blood_type, string city){
+      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
+      + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
+      if(i == 0){
+          cout << "Organ not found" << endl;
+          return;
+      }
+      int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
+      if(j == 0){
+          cout << "Blood type not found" << endl;
+          return;
+      }
+
+      Donor *n = new Donor;
+      n->name = name;
+      n->organ = i;
+      n->blood_type = j;
+      n->location = city;
+      n->next = NULL;
+      n->prev = NULL;
+      Donor *x = DonorList[i][j];
+      if(x == NULL){
+          DonorList[i][j] = n;
+          cout << "Added " << n->name << " to spot " << i << "," << j << endl;
+          return;
+      }
+      while(x->next != NULL){
+          x = x->next;
+      }
+      n->prev = x;
+      x->next = n;
+  }
+
+  void PatientTree::deletePatient(string name){
+      for(int i = 0; i < 7; i++){
+          for(int j = 0; j < 4; j++){
+              Patient *x = PatientList[i][j];
+              while(x != NULL){
+                  if(x->name == name){
+                      if(x->next == NULL){
+                          x->prev->next = NULL;
+                          delete x;
+                          return;
+                      }
+                      if(x->prev == NULL){
+                          x->next->prev = NULL;
+                          PatientList[i][j] = x->next;
+                          delete x;
+                          return;
+                      }
+                      else{
+                          x->prev->next = x->next;
+                          x->next->prev = x->prev;
+                          delete x;
+                          return;
+                      }
+                  }
+                  x = x->next;
+              }
+          }
+      }
+      cout << "patient not found." << endl;
+  }
+
+  void PatientTree::deleteDonor(string name){
+      for(int i = 0; i < 7; i++){
+          for(int j = 0; j < 4; j++){
+              Donor *x = DonorList[i][j];
+              while(x != NULL){
+                  if(x->name == name){
+                      if(x->next == NULL){
+                          x->prev->next = NULL;
+                          delete x;
+                          return;
+                      }
+                      if(x->prev == NULL){
+                          x->next->prev = NULL;
+                          DonorList[i][j] = x->next;
+                          delete x;
+                          return;
+                      }
+                      else{
+                          x->prev->next = x->next;
+                          x->next->prev = x->prev;
+                          delete x;
+                          return;
+                      }
+                  }
+                  x = x->next;
+              }
+          }
+      }
+      cout << "patient not found." << endl;
+  }
+
+  void PatientTree::buildPatientList(){
+      for(int i = 0; i < 7; i++){
+          for(int j = 0; j < 4; j++){
+              PatientList[i][j] = 0;
+          }
+      }
+  }
+
+  void PatientTree::buildDonorList(){
+      for(int i = 0; i < 7; i++){
+          for(int j = 0; j < 4; j++){
+              DonorList[i][j] = 0;
+          }
+      }
   }
 
 }

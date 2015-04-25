@@ -2,32 +2,72 @@
 #define PATIENTLIST_H
 
 
+//heart = 1
+//lungs = 2
+//liver = 3
+//pancreas = 4
+//kindey = 5
+//intestines = 6
+//head = 7
+
+//A = 1
+//B = 2
+//AB = 3
+//O = 4
 
 struct Donor{
     std::string name;
-    std::string organ;
-    std::string blood_type;
+    int organ;
+    int blood_type;
     std::string location;
-    *Donor next;
-    *Donor prev;
+    Donor* next;
+    Donor* prev;
 };
 
 struct Patient{
     std::string name;
-    std::string organ;
-    std::string blood_type;
+    int organ;
+    int blood_type;
     int survivability;
     std::string location;
     int time_left;
-    *Patient next;
-    *Patient prev;
+    Patient* next;
+    Patient* prev;
 };
 
 struct Pair{
   std::string patient;
   std::string donor;
   int success_rate;
-}
+};
+
+struct vertex;
+
+struct adjVertex{
+    vertex *v;
+    int weight;
+};
+
+struct queueVertex{
+	int edges;
+	int distance;
+	vector<vertex> path;
+};
+
+struct vertex{
+	vertex* previous;
+	bool visited; //has the vertex been visited?
+	int ID; //what district does the vertex belong to?
+	int numEdge; //how many edges separate the vertex from the starting vertex?
+	int distance; //how far  is the vertec from the starting vertex?
+	std::string path[100]; //what is the path between the vertex and the starting vertex?
+  std::string name; //what is the name of the vertex?
+  vector<adjVertex> adj; //what are the adjacent vertices to the vertex?
+  vector<queueVertex> que; //what are the edges, distance, and path to start vertex?
+};
+
+vector<vertex> vertices;
+
 
 
 class PatientTree
@@ -38,7 +78,7 @@ class PatientTree
         virtual ~PatientTree();
         Patient *PatientList[7][4];
         Donor *DonorList[7][4];
-        void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left, survivability);
+        void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left, int survivability);
         void addDonor(std::string name, std::string organ, std::string blood_type, std:: string city);
         void deletePatient(std::string name);
         void deleteDonor(std::string name);
@@ -61,7 +101,7 @@ class PatientTree
         void findShortestDistance(std::string starting_city, std::string ending_city); //finds shortest path between two cities
         void findMatch(); //finds all possible patient donor matches
         void chooseMatch(); //chooses best patient doner match
-        void Dijkstra(int count, std::string starting, std::string destination){
+        void Dijkstra(int count, std::string starting, std::string destination);
 
 };
 #endif // MOVIETREE_H
