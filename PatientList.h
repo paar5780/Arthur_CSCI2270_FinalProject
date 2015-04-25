@@ -1,6 +1,8 @@
 #ifndef PATIENTLIST_H
 #define PATIENTLIST_H
 
+
+
 struct Donor{
     std::string name;
     std::string organ;
@@ -20,6 +22,12 @@ struct Patient{
     *Patient next;
     *Patient prev;
 };
+
+struct Pair{
+  std::string patient;
+  std::string donor;
+  int success_rate;
+}
 
 
 class PatientTree
