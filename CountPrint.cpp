@@ -169,11 +169,11 @@ void findShortestDistance(int count, string city1, string city2){
 }
 
 int countPatients(){
-  //organs: heart, kidney, liver, lungs, pancreas, intestines
+  //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
 
   Patient* patientList[4] //array of pointers to head nodes of linked list
-  
+
 
 
   for (int o = 0; o < 6; o++){
