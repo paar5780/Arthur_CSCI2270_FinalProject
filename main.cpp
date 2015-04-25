@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits.h>
 #include <fstream>
 #include <sstream>
 #include <stdio.h>      /* printf, fgets */

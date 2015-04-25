@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits.h>
 #include "PatientList.h"
 
 
@@ -10,7 +11,12 @@ using namespace std;
 PatientList::PatientList()
 {
     //constructor
-
+    for(int i = 0; i < 7; i++){
+      for(int j = 0; j < 4; j++){
+        PatientList[i][j] = NULL;
+        DonorList[i][j] = NULL;
+      }
+    }
 }
 
 
@@ -104,7 +110,7 @@ void Dijkstra(int count, std::string starting, std::string destination){
     for(int i=0; i<vertices.size(); i++){
         vertices[i].visited = false;
         vertices[i].previous = NULL;
-        vertices[i].distance = 999999999;
+        vertices[i].distance = INT_MAX;
         if(vertices[i].name == starting){
             vertices[i].visited = true;
             vertices[i].distance = 0;
@@ -122,7 +128,7 @@ void Dijkstra(int count, std::string starting, std::string destination){
     }
 
     while (d->visited == false){
-        minDistance = 99999999; //arbitary large number
+        minDistance = INT_MAX; //arbitary large number
         for (int i = 0; i < solved.size(); i++){ //for every solved vertex
              for (int j = 0; j < solved[i]->adj.size(); j++){ //for every adjacent vertex
                  if (solved[i]->adj[j].v->visited == false){ //if that adjacent vertex hasn't already been solved (visited)
