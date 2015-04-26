@@ -51,7 +51,7 @@ struct adjVertex{
 struct queueVertex{
 	int edges;
 	int distance;
-	vector<vertex> path;
+	std::vector<vertex> path;
 };
 
 struct vertex{
@@ -62,11 +62,11 @@ struct vertex{
 	int distance; //how far  is the vertec from the starting vertex?
 	std::string path[100]; //what is the path between the vertex and the starting vertex?
   std::string name; //what is the name of the vertex?
-  vector<adjVertex> adj; //what are the adjacent vertices to the vertex?
-  vector<queueVertex> que; //what are the edges, distance, and path to start vertex?
+  std::vector<adjVertex> adj; //what are the adjacent vertices to the vertex?
+  std::vector<queueVertex> que; //what are the edges, distance, and path to start vertex?
 };
 
-vector<vertex> vertices;
+std::vector<vertex> vertices;
 
 
 
@@ -88,20 +88,21 @@ class PatientTree
         void printPatients();
         void printMatches(); //prints all of the matches with patients and donors that have been made
         void Operate(); //operates and outputs results
-
+		    void buildGraph(); //builds graph with cities
+		    void buildPatientList(); //builds empty patient list
+        void buildDonorList(); //builds empty donor list
 
     protected:
 
     private:
         void addVertex(std::string city);
         void addEdge(std::string starting_city, std::string ending_city, int weight);
-        void buildPatientList(); //builds empty patient list
-        void buildDonorList(); //builds empty donor list
-        void buildGraph(); //builds graph with cities
-        void findShortestDistance(std::string starting_city, std::string ending_city); //finds shortest path between two cities
-        void findMatch(); //finds all possible patient donor matches
+
+
+        int findShortestDistance(int count, std::string starting_city, std::string ending_city); //finds shortest path between two cities
+        Patient* findMatch(Donor * d); //finds all possible patient donor matches
         void chooseMatch(); //chooses best patient doner match
-        void Dijkstra(int count, std::string starting, std::string destination);
+        int Dijkstra(int count, std::string starting, std::string destination);
 
 };
 #endif // MOVIETREE_H
