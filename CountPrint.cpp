@@ -432,6 +432,9 @@ Patient* PatientTree::findPatientMatch(Donor* d){
   if (best == NULL){
     cout << "No suitable patient was found" << endl;
   }
+  else{
+    cout << "Match found!" << endl;
+  }
   return best;
 }
 
@@ -471,11 +474,12 @@ Patient* PatientTree::findDonorMatch(Patient *p){
 	  time_taken = findShortestDistance(18, p->location, d->location);
 	  if (p->time_left >= time_taken){
 		    return d;
+        cout << "A suitable donor was found!"
 	  }
 	}
 	m++;
   }
-  cout << "No suitible donor was found." << endl;
+  cout << "No suitable donor was found." << endl;
   return NULL;
 }
 
@@ -666,14 +670,29 @@ void PatientList::printMatches(){
     }
 }
 
-void PatientList::Operate(){
-  match = dequeue();
-  //need something to determine if it was succesful
+
+void PatientTree::Operate(){
+  Pair* operatedPair;
+	int successChance = arrayQueue[queueHead]->survivability;
+	bool success = (rand() % 100) < successChance;
+	if(success == true){
+		cout<<arrayQueue[queueHead]->name<<"'s surgery was a success."<<endl;
+		operatedPair = dequeue();
+    successCount++;
+	}
+	else{
+		cout<<arrayQueue[queueHead]->name<<"'s surgery was a failure."<<endl;
+		operatedPair = dequeue();
+    failureCount++;
+	}
 }
+
 
 
 int main(){
 
+  successCount = 0;
+	failureCount = 0;
 
 	PatientTree myTree;
   myTree.buildGraph();

@@ -91,10 +91,16 @@ class PatientTree
 		    void buildGraph(); //builds graph with cities
 		    void buildPatientList(); //builds empty patient list
         void buildDonorList(); //builds empty donor list
+        void enqueue(*Pair);
+        Pair* dequeue();
+        bool queueIsFull();
+        bool queueIsEmpty();
 
         int queueSize;
         int queueHead;
         int queueTail;
+        int successCount;
+      	int failureCount;
 
     protected:
 

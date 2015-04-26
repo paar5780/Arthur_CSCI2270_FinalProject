@@ -61,8 +61,20 @@ int main(){
     string location;
     getline(cin, location);
 
-    addPatient(name, organ, blood_type, city, time_left, suvivability);
-
+    Patient* newPatient = addPatient(name, organ, blood_type, city, time_left, suvivability);
+    donorMatch = findDonorMatch(newPatient);
+    if (donorMatch != NULL){
+      bool full = queueIsFull();
+      if (full == true){
+        cout << "Must operate before adding another match." << end;
+      }
+      else{
+        newPair* = new Pair;
+        Pair->patient = newPatient;
+        Pair->donor = donorMatch;
+        enqueue(newPair);
+        deleteDonor(donorMatch->name);
+      }
 
   }
 
@@ -83,8 +95,21 @@ int main(){
     string location;
     getline(cin, location);
 
-    addDonor(name, organ, blood_type, city);
-
+    Donor* newDonor = addDonor(name, organ, blood_type, city);
+    patientMatch = findPatientMatch(newDonor);
+    if (patientMatch != NULL){
+      bool full = queueIsFull();
+      if (full == true){
+        cout << "Must operate before adding another match." << end;
+      }
+      else{
+        newPair* = new Pair;
+        Pair->patient = patientMatch;
+        Pair->donor = newDonor;
+        enqueue(newPair);
+        deletePatient(patientMatch->name);
+      }
+    }
   }
 
   if (answer == 3){
@@ -120,7 +145,13 @@ int main(){
   }
 
   if (answer == 9){
-    printMatches();
+    bool empty = queueIsEmpty();
+    if (bool == false){
+      cout << "No matches currently waiting operations." << endl;
+    }
+    else{
+      printMatches();
+    }
   }
 
   if (answer == 10){
