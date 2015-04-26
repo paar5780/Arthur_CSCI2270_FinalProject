@@ -88,11 +88,11 @@ class PatientTree
         void printPatients();
         void printMatches(); //prints all of the matches with patients and donors that have been made
         void Operate(); //operates and outputs results
-		    void buildGraph(); //builds graph with cities
-		    void buildPatientList(); //builds empty patient list
+		void buildGraph(); //builds graph with cities
+		void buildPatientList(); //builds empty patient list
         void buildDonorList(); //builds empty donor list
-        void enqueue(*Pair);
-        Pair* dequeue();
+        void enqueue(Pair);
+        Pair dequeue();
         bool queueIsFull();
         bool queueIsEmpty();
 
@@ -101,7 +101,10 @@ class PatientTree
         int queueTail;
         int successCount;
       	int failureCount;
-
+      	Pair* arrayQueue;
+		Patient* findPatientMatch(Donor*); //finds all possible patient donor matches
+        Donor* findDonorMatch(Patient*);
+        
     protected:
 
     private:
@@ -110,8 +113,7 @@ class PatientTree
 
 
         int findShortestDistance(int count, std::string starting_city, std::string ending_city); //finds shortest path between two cities
-        Patient* findPatientMatch(Donor * d); //finds all possible patient donor matches
-        Donor* findDonorMatch(Patient* p);
+       
         void chooseMatch(); //chooses best patient doner match
         int Dijkstra(int count, std::string starting, std::string destination);
 
