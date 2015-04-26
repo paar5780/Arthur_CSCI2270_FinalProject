@@ -417,7 +417,7 @@ Patient* PatientTree::findPatientMatch(Donor* d){
 
   int m = 0;
   while (js[m] != 0){
-	Patient* p = PatientList[d->organ][js[m]];
+	Patient* p = PatientList[d->organ-1][js[m-1]];
 	while (p != NULL){
 	  count++; //relative time on waiting list
 	  time_taken = findShortestDistance(18, p->location, d->location);
@@ -441,7 +441,7 @@ Patient* PatientTree::findPatientMatch(Donor* d){
   return best;
 }
 
-Patient* PatientTree::findDonorMatch(Patient* p){
+Donor* PatientTree::findDonorMatch(Patient *p){
   int js[4];
   for (int k = 0; k < 4; k++){
 	js[k] = 0;
@@ -469,16 +469,17 @@ Patient* PatientTree::findDonorMatch(Patient* p){
   Donor* best = NULL;
   int score;
   int time_taken;
+  int count;
 
   int m = 0;
   while (js[m] != 0){
 	count = 0;
-	Donor* d = DonorList[p->organ][js[m]];
+	Donor* d = DonorList[p->organ-1][js[m]-1];
 	while (d != NULL){
 	  time_taken = findShortestDistance(18, p->location, d->location);
 	  if (p->time_left >= time_taken){
 		return d;
-        cout << "A suitable donor was found!"
+        cout << "A suitable donor was found!" << endl;
 	  }
 	  d = d->next;
 	}
@@ -489,17 +490,33 @@ Patient* PatientTree::findDonorMatch(Patient* p){
 }
 
 Patient* PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
+	bool cityfound = false;
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
           cout << "Organ not found" << endl;
-          return 0;
+          // new
+          return NULL;
       }
       int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
       if(j == 0){
           cout << "Blood type not found" << endl;
-          return 0;
+          // new
+          return NULL;
       }
+      
+      for(int k = 0; k < vertices.size(); k++){
+		if(vertices[k].name == city){
+			cityfound = true;
+        }
+	   }
+	   
+	   if(cityfound == false){
+		   cout << "City not found" << endl;
+		   return NULL;
+	   }
+	   
+      
 
       Patient *n = new Patient;
       n->name = name;
@@ -510,9 +527,9 @@ Patient* PatientTree::addPatient(string name, string organ, string blood_type, s
       n->location = city;
       n->next = NULL;
       n->prev = NULL;
-      Patient *x = PatientList[i][j];
+      Patient *x = PatientList[i-1][j-1];
       if(x == NULL){
-          PatientList[i][j] = n;
+          PatientList[i-1][j-1] = n;
           return n;
       }
       while(x->next != NULL){
@@ -525,16 +542,16 @@ Patient* PatientTree::addPatient(string name, string organ, string blood_type, s
   }
 
 Donor* PatientTree::addDonor(string name, string organ, string blood_type, string city){
-      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
+      int i = -1 + 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
-      if(i == 0){
+      if(i == -1){
           cout << "Organ not found" << endl;
-          return 0;
+          return NULL;
       }
       int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
-      if(j == 0){
+      if(j == -1){
           cout << "Blood type not found" << endl;
-          return 0;
+          return NULL;
       }
 
       Donor *n = new Donor;
@@ -544,9 +561,9 @@ Donor* PatientTree::addDonor(string name, string organ, string blood_type, strin
       n->location = city;
       n->next = NULL;
       n->prev = NULL;
-      Donor *x = DonorList[i][j];
+      Donor *x = DonorList[i-1][j-1];
       if(x == NULL){
-          DonorList[i][j] = n;
+          DonorList[i-1][j-1] = n;
           cout << "Added " << n->name << " to spot " << i << "," << j << endl;
           return x;
       }
@@ -772,10 +789,10 @@ int main(){
     getline(cin, blood_type);
 
     cout << "Enter survivabilty rate:" << endl;
-    int rate;
+    int survivability;
     string str_rate;
     getline(cin, str_rate);
-    rate = atoi(str_rate.c_str());
+    survivability = atoi(str_rate.c_str());
 
     cout << "Enter time left:" << endl;
     int time_left;
@@ -787,17 +804,20 @@ int main(){
     string location;
     getline(cin, location);
 
-    Patient* newPatient = myTree.addPatient(name, organ, blood_type, city, time_left, survivability);
-    Donor* donorMatch = myTree.findDonorMatch(newPatient);
+    Patient* newPatient = myTree.addPatient(name, organ, blood_type, location, time_left, survivability);
+    Donor* donorMatch = NULL;
+    if(newPatient != NULL){
+		Donor* donorMatch = myTree.findDonorMatch(newPatient);
+	}
     if (donorMatch != NULL){
-      bool full = queueIsFull();
+      bool full = myTree.queueIsFull();
       if (full == true){
         cout << "Must operate before adding another match." << endl;
       }
       else{
         Pair newPair;
-        newPair.patient = newPatient;
-        newPair.donor = donorMatch;
+        newPair.patient = newPatient->name;
+        newPair.donor = donorMatch->name;
         myTree.enqueue(newPair);
         myTree.deleteDonor(donorMatch->name);
       }
@@ -823,8 +843,11 @@ int main(){
     string location;
     getline(cin, location);
 
-    Donor* newDonor = myTree.addDonor(name, organ, blood_type, city);
-    Patient* patientMatch = myTree.findPatientMatch(newDonor);
+    Donor* newDonor = myTree.addDonor(name, organ, blood_type, location);
+    Patient* patientMatch = NULL;
+    if(newDonor != NULL){
+		patientMatch = myTree.findPatientMatch(newDonor);
+	}
     if (patientMatch != NULL){
       bool full = myTree.queueIsFull();
       if (full == true){
