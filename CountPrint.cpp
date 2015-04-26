@@ -542,14 +542,14 @@ Patient* PatientTree::addPatient(string name, string organ, string blood_type, s
   }
 
 Donor* PatientTree::addDonor(string name, string organ, string blood_type, string city){
-      int i = -1 + 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
+      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
-      if(i == -1){
+      if(i == 0){
           cout << "Organ not found" << endl;
           return NULL;
       }
       int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
-      if(j == -1){
+      if(j == 0){
           cout << "Blood type not found" << endl;
           return NULL;
       }
