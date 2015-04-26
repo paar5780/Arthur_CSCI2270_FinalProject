@@ -4,7 +4,7 @@
 #include <limits.h>
 #include <string>
 #include <vector>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include "PatientList.h"
 
 
@@ -12,6 +12,8 @@ using namespace std;
 
 PatientTree::PatientTree(){
     //constructor
+    arrayQueue = new Pair*[10];
+
     for(int i = 0; i < 7; i++){
       for(int j = 0; j < 4; j++){
         PatientList[i][j] = NULL;
@@ -165,7 +167,7 @@ int PatientTree::Dijkstra(int count, std::string starting, std::string destinati
                     if (solved[i]->adj[j].v->distance < minDistance){
                         minDistance = solved[i]->adj[j].v->distance;
                         minVertex = solved[i]->adj[j].v;
-                        
+
                     }
                  }
              }
@@ -257,7 +259,7 @@ int PatientTree::countDonors(){
     }
 
   }
-	
+
 }
 return count;
 }
@@ -265,7 +267,44 @@ return count;
 void PatientTree::printPatients(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
+  string organ;
+  string blood_type;
   Patient* x;
+
+  if (x->organ == 1){
+    organ = "Heart";
+  }
+  else if (x->organ == 2){
+    organ = "Lungs";
+  }
+  else if (x->organ == 3){
+    organ = "Liver";
+  }
+  else if (x->organ == 4){
+    organ = "Pancreas";
+  }
+  else if (x->organ == 5){
+    organ = "Kidney";
+  }
+  else if (x->organ == 6){
+    organ = "Intestines";
+  }
+  else if (x->organ == 7){
+    organ = "Head";
+  }
+
+  if (x->blood_type == 1){
+    blood_type = "A";
+  }
+  else if (x->blood_type == 2){
+    blood_type = "B";
+  }
+  else if (x->blood_type == 3){
+    blood_type = "AB";
+  }
+  else if (x->blood_type == 4){
+    blood_type = "O";
+  }
 
   //iterate through organs
   for (int i = 0; i < 7; i++){
@@ -273,11 +312,11 @@ void PatientTree::printPatients(){
     for (int j = 0; j < 4; j++){
       if (PatientList[i][j] != NULL){
         x = PatientList[i][j]; //head of linked list
-        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
+        cout << x->name << " : " << organ << " - Blood type " << blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
         //iterate through patients
         while (x->next != NULL){
           x = x->next;
-          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
+          cout << x->name << " : " << organ << " - Blood type " << blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
         }
     }
 
@@ -290,6 +329,40 @@ void PatientTree::printDonors(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
   Donor* x;
+  if (x->organ == 1){
+    organ = "Heart";
+  }
+  else if (x->organ == 2){
+    organ = "Lungs";
+  }
+  else if (x->organ == 3){
+    organ = "Liver";
+  }
+  else if (x->organ == 4){
+    organ = "Pancreas";
+  }
+  else if (x->organ == 5){
+    organ = "Kidney";
+  }
+  else if (x->organ == 6){
+    organ = "Intestines";
+  }
+  else if (x->organ == 7){
+    organ = "Head";
+  }
+
+  if (x->blood_type == 1){
+    blood_type = "A";
+  }
+  else if (x->blood_type == 2){
+    blood_type = "B";
+  }
+  else if (x->blood_type == 3){
+    blood_type = "AB";
+  }
+  else if (x->blood_type == 4){
+    blood_type = "O";
+  }
 
   //iterate through organs
   for (int i = 0; i < 7; i++){
@@ -297,11 +370,11 @@ void PatientTree::printDonors(){
     for (int j = 0; j < 4; j++){
       if (DonorList[i][j] != NULL){
         x = DonorList[i][j]; //head of linked list
-        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << endl;
+        cout << x->name << " : " << organ << " - Blood type " << blood_type << " - " << x->location << endl;
         //iterate through patients
         while (x->next != NULL){
           x = x->next;
-          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << endl;
+          cout << x->name << " : " << organ << " - Blood type " << blood_type << " - " << x->location << endl;
         }
     }
 
@@ -310,7 +383,7 @@ void PatientTree::printDonors(){
 }
 }
 
-Patient* PatientTree::findMatch(Donor* d){
+Patient* PatientTree::findPatientMatch(Donor* d){
   int js[4];
   for (int k = 0; k < 4; k++){
 	js[k] = 0;
@@ -356,10 +429,57 @@ Patient* PatientTree::findMatch(Donor* d){
 	}
 	m++;
   }
+  if (best == NULL){
+    cout << "No suitable patient was found" << endl;
+  }
   return best;
 }
 
-void PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
+Patient* PatientTree::findDonorMatch(Patient *p){
+  int js[4];
+  for (int k = 0; k < 4; k++){
+	js[k] = 0;
+  }
+
+  if(p->blood_type==1){
+	js[0] = 1;
+	js[1] = 4;
+  }
+  if(p->blood_type==1){
+	js[0] = 2;
+	js[1] = 4;
+  }
+  if(p->blood_type==3){
+	js[0] = 1;
+  js[1] = 2;
+  js[2] = 3;
+  js[3] = 4;
+  }
+  if(p->blood_type==4){
+	js[0] = 4;
+  }
+
+  int best_score = INT_MIN;
+  Donor* best = NULL;
+  int score;
+  int time_taken;
+
+  int m = 0;
+  while (js[m] != 0){
+	Donor* d = DonorList[p->organ][js[m]];
+	while (d->next != NULL){
+	  time_taken = findShortestDistance(18, p->location, d->location);
+	  if (p->time_left >= time_taken){
+		    return d;
+	  }
+	}
+	m++;
+  }
+  cout << "No suitible donor was found." << endl;
+  return NULL;
+}
+
+Patient* PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
@@ -374,6 +494,8 @@ void PatientTree::addPatient(string name, string organ, string blood_type, strin
 
       Patient *n = new Patient;
       n->name = name;
+      n->survivability = survivability;
+      n->time_left = time_left;
       n->organ = i;
       n->blood_type = j;
       n->location = city;
@@ -389,9 +511,11 @@ void PatientTree::addPatient(string name, string organ, string blood_type, strin
       }
       n->prev = x;
       x->next = n;
+
+      return n;
   }
 
-void PatientTree::addDonor(string name, string organ, string blood_type, string city){
+Donor* PatientTree::addDonor(string name, string organ, string blood_type, string city){
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
@@ -422,6 +546,8 @@ void PatientTree::addDonor(string name, string organ, string blood_type, string 
       }
       n->prev = x;
       x->next = n;
+
+      return n;
   }
 
 void PatientTree::deletePatient(string name){
@@ -502,13 +628,93 @@ void PatientTree::buildDonorList(){
       }
 }
 
+void PatientTree::enqueue(Pair* match){ //we can do this bc we've declared push in header
+	arrayQueue[queueTail] = word;
+	queueTail++;
+	queueTail = queueTail % 10;
+
+}
+
+Pair* PatientTree::dequeue(){
+  Pair* match = arrayQueue[queueHead];
+  queueHead++;
+	queueHead = queueHead % 10;
+  return match;
+}
+
+bool PatientTree::queueIsFull(){
+    if ((queueTail+1)%10 == queueHead){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool PatientTree::queueIsEmpty(){
+    if (queueHead == queueTail){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+void PatientList::printMatches(){
+    for(int i = queueHead; i < queueTail; i++){
+        cout << "Patient: " << arrayQueue[i]->patient << " - Donor: " << arrayQueue[i]->donor << " - Chance of sucessfull operation: "<< arrayQueue[i]->survivability << endl;
+    }
+}
+
+void PatientList::Operate(){
+  match = dequeue();
+  //need something to determine if it was succesful
+}
+
+
 int main(){
+
+
 	PatientTree myTree;
   myTree.buildGraph();
   myTree.buildDonorList();
   myTree.buildPatientList();
 	bool running = true;
-	
+
+  ifstream textFile;
+	textFile.open("patientList.txt");
+	string line;
+	string tempLine;
+	string name;
+	string organ;
+	string blood_type;
+	string city;
+	int successRate;
+	int time;
+	while(!textFile.eof()){
+
+		getline(textFile, line, ',');
+		name = line;
+
+		getline(textFile, line, ',');
+		organ = line;
+
+		getline(textFile, line, ',');
+		blood_type = line;
+
+		getline(textFile, line, ',');
+		city = line;
+
+		getline(textFile, line, ',');
+		successRate = atoi(line.c_str());
+
+		getline(textFile, line);
+		time = atoi(line.c_str());
+
+		myTree.addPatient(name, organ, blood_type, city, time, successRate);
+
+	}
+
   while(running == true){
     //build main menu
     cout	<<	"======Main Menu====="	<<	endl;
@@ -523,7 +729,7 @@ int main(){
     cout  <<  "9. Print matches" << endl;
     cout  <<  "10. Operate" << endl;
     cout	<<	"11. Quit"	<<	endl;
-  
+
 
   int answer;
   cin >> answer;
@@ -631,4 +837,3 @@ int main(){
   }
 }
 }
-

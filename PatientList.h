@@ -78,8 +78,8 @@ class PatientTree
         virtual ~PatientTree();
         Patient *PatientList[7][4];
         Donor *DonorList[7][4];
-        void addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left, int survivability);
-        void addDonor(std::string name, std::string organ, std::string blood_type, std:: string city);
+        Patient* addPatient(std::string name, std::string organ, std::string blood_type, std:: string city, int time_left, int survivability);
+        Donor* addDonor(std::string name, std::string organ, std::string blood_type, std:: string city);
         void deletePatient(std::string name);
         void deleteDonor(std::string name);
         int countPatients();
@@ -92,6 +92,10 @@ class PatientTree
 		    void buildPatientList(); //builds empty patient list
         void buildDonorList(); //builds empty donor list
 
+        int queueSize;
+        int queueHead;
+        int queueTail;
+
     protected:
 
     private:
@@ -100,9 +104,12 @@ class PatientTree
 
 
         int findShortestDistance(int count, std::string starting_city, std::string ending_city); //finds shortest path between two cities
-        Patient* findMatch(Donor * d); //finds all possible patient donor matches
+        Patient* findPatientMatch(Donor * d); //finds all possible patient donor matches
+        Donor* findDonorMatch(Patient* p);
         void chooseMatch(); //chooses best patient doner match
         int Dijkstra(int count, std::string starting, std::string destination);
+
+
 
 };
 #endif // MOVIETREE_H
