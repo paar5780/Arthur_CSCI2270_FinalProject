@@ -3,14 +3,14 @@
 #include <sstream>
 #include <limits.h>
 #include <string>
+#include <vector>
+#include <stdlib.h> 
 #include "PatientList.h"
 
 
 using namespace std;
 
-//MovieTree::MovieTree(char *filename)
-PatientList::PatientList()
-{
+PatientTree::PatientTree(){
     //constructor
     for(int i = 0; i < 7; i++){
       for(int j = 0; j < 4; j++){
@@ -20,8 +20,9 @@ PatientList::PatientList()
     }
 }
 
-
-void addVertex(std::string n){
+PatientTree::~PatientTree(){
+}
+void PatientTree::addVertex(std::string n){
 	//make sure it's not already in the graph
     bool found = false;
     for(int i = 0; i < vertices.size(); i++){
@@ -38,7 +39,7 @@ void addVertex(std::string n){
     }
 }
 
-void addEdge(std::string v1, std::string v2, int weight){
+void PatientTree::addEdge(std::string v1, std::string v2, int weight){
 
     for(int i = 0; i < vertices.size(); i++){
         if(vertices[i].name == v1){
@@ -61,72 +62,71 @@ void addEdge(std::string v1, std::string v2, int weight){
 }
 
 
-void PatientList::buildGraph(){
-  Graph g;
-  g.addVertex("Boston");
-	g.addVertex("New York City");
-	g.addVertex("Philadelphia");
-	g.addVertex("Atlanta");
-	g.addVertex("Denver");
-	g.addVertex("San Francisco");
-	g.addVertex("Dallas");
-	g.addVertex("Phoenix");
-  g.addVertex("Seattle");
-  g.addVertex("Honolulu");
-  g.addVertex("Chicago");
-  g.addVertex("Detroit");
-  g.addVertex("Los Angeles");
-  g.addVertex("Houston");
-  g.addVertex("Miami");
-  g.addVertex("Memphis");
-  g.addVertex("Cleveland");
-  g.addVertex("Boise");
+void PatientTree::buildGraph(){
+  //Graph g;
+  addVertex("Boston");
+	addVertex("New York City");
+	addVertex("Philadelphia");
+	addVertex("Atlanta");
+	addVertex("Denver");
+	addVertex("San Francisco");
+	addVertex("Dallas");
+	addVertex("Phoenix");
+  addVertex("Seattle");
+  addVertex("Honolulu");
+  addVertex("Chicago");
+  addVertex("Detroit");
+  addVertex("Los Angeles");
+  addVertex("Houston");
+  addVertex("Miami");
+  addVertex("Memphis");
+  addVertex("Cleveland");
+  addVertex("Boise");
   //edge written to be undirected
-  g.addEdge("Seattle", "San Francisco", 2);
-  g.addEdge("Seattle", "Phoenix", 3);
-  g.addEdge("Seattle", "New York City", 6);
-  g.addEdge("San Francisco", "New York City", 6);
-  g.addEdge("San Francisco", "Phoenix", 2);
-  g.addEdge("San Francisco", "Boston", 6);
-  g.addEdge("San Francisco", "Denver", 3);
-  g.addEdge("Boise", "Seattle", 1);
-  g.addEdge("Boise", "Denver", 2);
-  g.addEdge("Los Angeles", "San Francisco", 1);
-  g.addEdge("Los Angeles", "Denver", 2);
-  g.addEdge("Los Angeles", "Dallas", 3);
-  g.addEdge("Los Angeles", "Miami", 5);
-  g.addEdge("Los Angeles", "New York", 6);
-  g.addEdge("Los Angeles", "Boston", 6);
-  g.addEdge("Denver", "Phoenix", 2);
-  g.addEdge("Denver", "Dallas", 2);
-  g.addEdge("Denver", "New York", 4);
-  g.addEdge("Honolulu", "San Fransisco", 5);
-  g.addEdge("Dallas", "Memphis", 1);
-  g.addEdge("Dallas", "Houston", 1);
-  g.addEdge("Dallas", "Atlanta", 2);
-  g.addEdge("Houston", "Miami", 3);
-  g.addEdge("Houston", "Philadelphia", 3);
-  g.addEdge("Houston", "Chicago", 3);
-  g.addEdge("Memphis", "Atlanta", 1);
-  g.addEdge("Memphis", "Cleveland", 4);
-  g.addEdge("Cleveland", "Detroit", 1);
-  g.addEdge("Cleveland", "Chicago", 1);
-  g.addEdge("Detroit", "Chicago", 1);
-  g.addEdge("Detroit", "New York City", 2);
-  g.addEdge("Detroit", "Philadelphia", 2);
-  g.addEdge("Detroit", "Denver", 3);
-  g.addEdge("Miami", "Los Angeles", 5);
-  g.addEdge("Miami", "Atlanta", 2);
-  g.addEdge("Atlanta", "Philadelphia", 2);
-  g.addEdge("Philadelpha", "Boston", 1);
-  g.addEdge("Boston", "New York City", 1);
+  addEdge("Seattle", "San Francisco", 2);
+  addEdge("Seattle", "Phoenix", 3);
+  addEdge("Seattle", "New York City", 6);
+  addEdge("San Francisco", "New York City", 6);
+  addEdge("San Francisco", "Phoenix", 2);
+  addEdge("San Francisco", "Boston", 6);
+  addEdge("San Francisco", "Denver", 3);
+  addEdge("Boise", "Seattle", 1);
+  addEdge("Boise", "Denver", 2);
+  addEdge("Los Angeles", "San Francisco", 1);
+  addEdge("Los Angeles", "Denver", 2);
+  addEdge("Los Angeles", "Dallas", 3);
+  addEdge("Los Angeles", "Miami", 5);
+  addEdge("Los Angeles", "New York", 6);
+  addEdge("Los Angeles", "Boston", 6);
+  addEdge("Denver", "Phoenix", 2);
+  addEdge("Denver", "Dallas", 2);
+  addEdge("Denver", "New York", 4);
+  addEdge("Honolulu", "San Fransisco", 5);
+  addEdge("Dallas", "Memphis", 1);
+  addEdge("Dallas", "Houston", 1);
+  addEdge("Dallas", "Atlanta", 2);
+  addEdge("Houston", "Miami", 3);
+  addEdge("Houston", "Philadelphia", 3);
+  addEdge("Houston", "Chicago", 3);
+  addEdge("Memphis", "Atlanta", 1);
+  addEdge("Memphis", "Cleveland", 4);
+  addEdge("Cleveland", "Detroit", 1);
+  addEdge("Cleveland", "Chicago", 1);
+  addEdge("Detroit", "Chicago", 1);
+  addEdge("Detroit", "New York City", 2);
+  addEdge("Detroit", "Philadelphia", 2);
+  addEdge("Detroit", "Denver", 3);
+  addEdge("Miami", "Los Angeles", 5);
+  addEdge("Miami", "Atlanta", 2);
+  addEdge("Atlanta", "Philadelphia", 2);
+  addEdge("Philadelpha", "Boston", 1);
+  addEdge("Boston", "New York City", 1);
 }
 
-int Dijkstra(int count, std::string starting, std::string destination){
+int PatientTree::Dijkstra(int count, std::string starting, std::string destination){
 
     int minDistance;
     vertex* minVertex;
-    vertex* minVertexPrev;
     vector <vertex *> solved;
 
     //set visted to false, except on starting vertex
@@ -165,7 +165,7 @@ int Dijkstra(int count, std::string starting, std::string destination){
                     if (solved[i]->adj[j].v->distance < minDistance){
                         minDistance = solved[i]->adj[j].v->distance;
                         minVertex = solved[i]->adj[j].v;
-                        minVertexPrev = solved[i];
+                        
                     }
                  }
              }
@@ -184,7 +184,7 @@ int Dijkstra(int count, std::string starting, std::string destination){
     }
 
     cout << minDistance << ","; //print minimum distance
-    return minDistance;
+    //return minDistance;
 
 	//print path by going through vector in reverse
 	//since the path was added to the vector in reverse in the first place
@@ -194,25 +194,26 @@ int Dijkstra(int count, std::string starting, std::string destination){
             cout << ",";
         }
     }
+    return minDistance;
 }
 
 
-int findShortestDistance(int count, string city1, string city2){
+int PatientTree::findShortestDistance(int count, string city1, string city2){
   //check the two cities
-  bool cont = checkCities(count, city1, city2);
+  /*bool cont = checkCities(count, city1, city2);
   if (cont == false){
   	return;
-  }
+  }*/
   //use Dijkstra traverse to find and print the shortest distance
   int distance = Dijkstra(count, city1, city2);
   return distance;
   cout << endl;
 }
 
-int countPatients(){
+int PatientTree::countPatients(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
-  node* x;
+  Patient* x;
   int count = 0;
 
   //iterate through organs
@@ -232,11 +233,13 @@ int countPatients(){
   }
 
 }
+return count;
+}
 
-int countDonors(){
+int PatientTree::countDonors(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
-  node* x;
+  Donor* x;
   int count = 0;
 
   //iterate through organs
@@ -254,13 +257,15 @@ int countDonors(){
     }
 
   }
-
+	
+}
+return count;
 }
 
-void printPatients(){
+void PatientTree::printPatients(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
-  node* x;
+  Patient* x;
 
   //iterate through organs
   for (int i = 0; i < 7; i++){
@@ -268,22 +273,23 @@ void printPatients(){
     for (int j = 0; j < 4; j++){
       if (PatientList[i][j] != NULL){
         x = PatientList[i][j]; //head of linked list
-        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->surviability << " chance of survival - " << x->time_left << " hours left" << endl;
+        cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
         //iterate through patients
         while (x->next != NULL){
           x = x->next;
-          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->surviability << " chance of survival - " << x->time_left << " hours left" << endl;
+          cout << x->name << " : " << x->organ << " - Blood type " << x->blood_type << " - " << x->location << " - " << x->survivability << " chance of survival - " << x->time_left << " hours left" << endl;
         }
     }
 
   }
 
 }
+}
 
-void printDonors(){
+void PatientTree::printDonors(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
   //blood tyes: O, A, B, AB
-  node* x;
+  Donor* x;
 
   //iterate through organs
   for (int i = 0; i < 7; i++){
@@ -302,54 +308,58 @@ void printDonors(){
   }
 
 }
+}
 
-Patient* findPatientMatch(Donor* d){
+Patient* PatientTree::findMatch(Donor* d){
   int js[4];
   for (int k = 0; k < 4; k++){
-    js[k] = 0;
+	js[k] = 0;
   }
 
   if(d->blood_type==1){
-    js[0] = 1;
-    js[1] = 3;
+	js[0] = 1;
+	js[1] = 3;
   }
   if(d->blood_type==1){
-    js[0] = 2;
-    js[1] = 3;
+	js[0] = 2;
+	js[1] = 3;
   }
   if(d->blood_type==3){
-    js[0] = 3;
+	js[0] = 3;
   }
   if(d->blood_type==4){
-    js[0] = 1;
-    js[1] = 2;
-    js[2] = 3;
-    js[3] = 4;
+	js[0] = 1;
+	js[1] = 2;
+	js[2] = 3;
+	js[3] = 4;
   }
 
   int best_score = INT_MIN;
-  node* best = NULL;
+  Patient* best = NULL;
   int count = 0;
   int score;
   int time_taken;
 
   int m = 0;
-  while (int js[m] != 0){
-    Patient* p = PatientList[d->organ][js[m]];
-    while (p->next != NULL){
-      count++; //relative time on waiting list
-      time_taken = findShortestDistance(p->location, d->location);
-      if (p->time_left >= time_taken){
-        score = survivability - count;
-        if (score > best_score){
-          best_score = score;
-          best = p;
-        }
-      }
-    }
+  while (js[m] != 0){
+	Patient* p = PatientList[d->organ][js[m]];
+	while (p->next != NULL){
+	  count++; //relative time on waiting list
+	  time_taken = findShortestDistance(18, p->location, d->location);
+	  if (p->time_left >= time_taken){
+		score = p->survivability - count;
+		if (score > best_score){
+		  best_score = score;
+		  best = p;
+		}
+	  }
+	}
+	m++;
   }
+  return best;
+}
 
-  void PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
+void PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
@@ -381,7 +391,7 @@ Patient* findPatientMatch(Donor* d){
       x->next = n;
   }
 
-  void PatientTree::addDonor(string name, string organ, string blood_type, string city){
+void PatientTree::addDonor(string name, string organ, string blood_type, string city){
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
@@ -414,7 +424,7 @@ Patient* findPatientMatch(Donor* d){
       x->next = n;
   }
 
-  void PatientTree::deletePatient(string name){
+void PatientTree::deletePatient(string name){
       for(int i = 0; i < 7; i++){
           for(int j = 0; j < 4; j++){
               Patient *x = PatientList[i][j];
@@ -445,7 +455,7 @@ Patient* findPatientMatch(Donor* d){
       cout << "patient not found." << endl;
   }
 
-  void PatientTree::deleteDonor(string name){
+void PatientTree::deleteDonor(string name){
       for(int i = 0; i < 7; i++){
           for(int j = 0; j < 4; j++){
               Donor *x = DonorList[i][j];
@@ -476,7 +486,7 @@ Patient* findPatientMatch(Donor* d){
       cout << "patient not found." << endl;
   }
 
-  void PatientTree::buildPatientList(){
+void PatientTree::buildPatientList(){
       for(int i = 0; i < 7; i++){
           for(int j = 0; j < 4; j++){
               PatientList[i][j] = 0;
@@ -484,12 +494,141 @@ Patient* findPatientMatch(Donor* d){
       }
   }
 
-  void PatientTree::buildDonorList(){
+void PatientTree::buildDonorList(){
       for(int i = 0; i < 7; i++){
           for(int j = 0; j < 4; j++){
               DonorList[i][j] = 0;
           }
       }
+}
+
+int main(){
+	PatientTree myTree;
+  myTree.buildGraph();
+  myTree.buildDonorList();
+  myTree.buildPatientList();
+	bool running = true;
+	
+  while(running == true){
+    //build main menu
+    cout	<<	"======Main Menu====="	<<	endl;
+    cout	<<	"1. Add a patient"	<<	endl;
+    cout	<<	"2. Add a donor"	<<	endl;
+    cout  <<  "3. Delete a patient"   << endl;
+    cout  <<  "4. Delete a donor"  << endl;
+    cout  <<  "5. Count patients" << endl;
+    cout  <<  "6. Count donors" << endl;
+    cout  <<  "7. Print patients" << endl;
+    cout  <<  "8. Print donors" << endl;
+    cout  <<  "9. Print matches" << endl;
+    cout  <<  "10. Operate" << endl;
+    cout	<<	"11. Quit"	<<	endl;
+  
+
+  int answer;
+  cin >> answer;
+  cin.ignore();
+
+  if (answer == 1){
+    cout << "Enter patient name:" << endl;
+    string name;
+    getline(cin, name);
+
+    cout << "Enter organ needed:" << endl;
+    string organ;
+    getline(cin, organ);
+
+    cout << "Enter blood type:" << endl;
+    string blood_type;
+    getline(cin, blood_type);
+
+    cout << "Enter survivabilty rate:" << endl;
+    int rate;
+    string str_rate;
+    getline(cin, str_rate);
+    rate = atoi(str_rate.c_str());
+
+    cout << "Enter time left:" << endl;
+    int time_left;
+    string str_time_left;
+    getline(cin, str_time_left);
+    time_left = atoi(str_time_left.c_str());
+
+    cout << "Enter location:" << endl;
+    string location;
+    getline(cin, location);
+
+    myTree.addPatient(name, organ, blood_type, location, time_left, rate);
+
+
   }
 
+  if (answer == 2){
+    cout << "Enter donor name:" << endl;
+    string name;
+    getline(cin, name);
+
+    cout << "Enter donated organ:" << endl;
+    string organ;
+    getline(cin, organ);
+
+    cout << "Enter blood type:" << endl;
+    string blood_type;
+    getline(cin, blood_type);
+
+    cout << "Enter location:" << endl;
+    string location;
+    getline(cin, location);
+
+    myTree.addDonor(name, organ, blood_type, location);
+
+  }
+
+  if (answer == 3){
+    cout << "Enter patient name:" << endl;
+    string name;
+    getline(cin, name);
+    myTree.deletePatient(name);
+  }
+
+  if (answer == 4){
+    cout << "Enter donor name:" << endl;
+    string name;
+    getline(cin, name);
+    myTree.deleteDonor(name);
+  }
+
+  if (answer == 5){
+    int count = myTree.countPatients();
+    cout << "There are " << count << " patients waiting."<<endl;
+  }
+
+  if (answer == 6){
+    int count = myTree.countDonors();
+    cout << "There are " << count << " donors availible."<<endl;
+  }
+
+  if (answer == 7){
+    myTree.printPatients();
+  }
+
+  if (answer == 8){
+    myTree.printDonors();
+  }
+
+  if (answer == 9){
+    //printMatches();
+  }
+
+  if (answer == 10){
+    //Operate();
+  }
+
+  if (answer == 11){
+	running = false;
+    cout << "Goodbye!" << endl;
+    return 0;
+  }
 }
+}
+
