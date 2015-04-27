@@ -41,9 +41,13 @@ Andrew Dudney
 
 Open Issues / Bugs:
 Features we would like:
+
 1. Make it so the user can add cities (with edges!) to the graph.
+ 
 2. Allow the organs, locations, and blood types to not be case sensitive
+
 3. Make it so that as time passes (aka as operations are done), time passes and the patients' "time left" runs out.
 
 Bugs:
+
 1. Sometimes the print matches function doesn't work and we're not sure why. It works most of the time but sometimes it won't print anything.
