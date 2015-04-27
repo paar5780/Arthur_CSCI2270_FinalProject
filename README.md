@@ -30,6 +30,8 @@ There are 11 options the user can select.
 
 10. Operate: This will "operate" on a donor - patient match and will determine whether or not the operation was a sucess using a random function and the patient's liklihood of survivability. It does not require any input arguments. 
 
+11. Quit: The program quits. It does not require any input arguments. 
+
 
 DEPENDENCIES:
 
