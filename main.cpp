@@ -1,18 +1,61 @@
 #include <iostream>
-#include <string>
-#include <limits.h>
 #include <fstream>
 #include <sstream>
-#include <stdio.h>      /* printf, fgets */
-#include <stdlib.h>     /* atoi */
-#include "PatientList.h"
+#include <limits.h>
+#include <string>
+#include <vector>
+#include <stdlib.h>
+#include "Patient_Donor_Database.h"
+
+
+using namespace std;
 
 int main(){
-  buildGraph();
-  buildDonorList();
-  buildPatientList();
 
-  while(1){
+
+
+  PatientTree myTree;
+  myTree.buildGraph();
+  myTree.buildDonorList();
+  myTree.buildPatientList();
+	bool running = true;
+
+  ifstream textFile;
+	textFile.open("patientList.txt");
+	string line;
+	string tempLine;
+	string name;
+	string organ;
+	string blood_type;
+	string city;
+	int successRate;
+	int time;
+	while(!textFile.eof()){
+
+		getline(textFile, line, ',');
+		name = line;
+
+		getline(textFile, line, ',');
+		organ = line;
+
+		getline(textFile, line, ',');
+		blood_type = line;
+
+		getline(textFile, line, ',');
+		city = line;
+
+		getline(textFile, line, ',');
+		successRate = atoi(line.c_str());
+
+		getline(textFile, line);
+		time = atoi(line.c_str());
+
+		if(!textFile.eof()){
+			myTree.addPatient(name, organ, blood_type, city, time, successRate);
+		}
+	}
+
+  while(running == true){
     //build main menu
     cout	<<	"======Main Menu====="	<<	endl;
     cout	<<	"1. Add a patient"	<<	endl;
@@ -26,7 +69,7 @@ int main(){
     cout  <<  "9. Print matches" << endl;
     cout  <<  "10. Operate" << endl;
     cout	<<	"11. Quit"	<<	endl;
-  }
+
 
   int answer;
   cin >> answer;
@@ -46,37 +89,44 @@ int main(){
     getline(cin, blood_type);
 
     cout << "Enter survivabilty rate:" << endl;
-    int rate;
+    int survivability;
     string str_rate;
     getline(cin, str_rate);
-    rate = atoi(str_rate);
+    survivability = atoi(str_rate.c_str());
 
     cout << "Enter time left:" << endl;
     int time_left;
     string str_time_left;
     getline(cin, str_time_left);
-    time_left = atoi(str_time_left);
+    time_left = atoi(str_time_left.c_str());
 
     cout << "Enter location:" << endl;
     string location;
     getline(cin, location);
 
-    Patient* newPatient = addPatient(name, organ, blood_type, city, time_left, suvivability);
-    donorMatch = findDonorMatch(newPatient);
+    Patient* newPatient = myTree.addPatient(name, organ, blood_type, location, time_left, survivability);
+    Donor* donorMatch = NULL;
+    if(newPatient != NULL){
+		Donor* donorMatch = myTree.findDonorMatch(newPatient);
+	}
     if (donorMatch != NULL){
-      bool full = queueIsFull();
+      bool full = myTree.queueIsFull();
       if (full == true){
-        cout << "Must operate before adding another match." << end;
+        cout << "Must operate before adding another match." << endl;
       }
       else{
-        newPair* = new Pair;
-        Pair->patient = newPatient;
-        Pair->donor = donorMatch;
-        enqueue(newPair);
-        deleteDonor(donorMatch->name);
+        Pair newPair;
+        newPair.patient = newPatient->name;
+        newPair.donor = donorMatch->name;
+        newPair.success_rate = newPatient->survivability;
+        myTree.enqueue(newPair);
+        myTree.deleteDonor(donorMatch->name);
+        myTree.deletePatient(newPatient->name);
       }
 
+
   }
+}
 
   if (answer == 2){
     cout << "Enter donor name:" << endl;
@@ -95,72 +145,73 @@ int main(){
     string location;
     getline(cin, location);
 
-    Donor* newDonor = addDonor(name, organ, blood_type, city);
-    patientMatch = findPatientMatch(newDonor);
+    Donor* newDonor = myTree.addDonor(name, organ, blood_type, location);
+    Patient* patientMatch = NULL;
+    if(newDonor != NULL){
+		patientMatch = myTree.findPatientMatch(newDonor);
+	}
     if (patientMatch != NULL){
-      bool full = queueIsFull();
+      bool full = myTree.queueIsFull();
       if (full == true){
-        cout << "Must operate before adding another match." << end;
+        cout << "Must operate before adding another match." << endl;
       }
       else{
-        newPair* = new Pair;
-        Pair->patient = patientMatch;
-        Pair->donor = newDonor;
-        enqueue(newPair);
-        deletePatient(patientMatch->name);
+        Pair newPair;
+        newPair.patient = patientMatch->name;
+        newPair.donor = newDonor->name;
+        newPair.success_rate = patientMatch->survivability;
+        myTree.enqueue(newPair);
+        myTree.deletePatient(patientMatch->name);
+        myTree.deleteDonor(newDonor->name);
       }
     }
+
   }
 
   if (answer == 3){
     cout << "Enter patient name:" << endl;
     string name;
     getline(cin, name);
-    deletePatient(name);
+    myTree.deletePatient(name);
   }
 
   if (answer == 4){
     cout << "Enter donor name:" << endl;
     string name;
     getline(cin, name);
-    deleteDonor(name);
+    myTree.deleteDonor(name);
   }
 
   if (answer == 5){
-    int count = countPatients();
-    cout << "There are " << count << " patients waiting."
+    int count = myTree.countPatients();
+    cout << "There are " << count << " patients waiting."<<endl;
   }
 
   if (answer == 6){
-    int count = countDonors();
-    cout << "There are " << count << " donors availible."
+    int count = myTree.countDonors();
+    cout << "There are " << count << " donors availible."<<endl;
   }
 
   if (answer == 7){
-    printPatients();
+    myTree.printPatients();
   }
 
   if (answer == 8){
-    printDonors();
+    myTree.printDonors();
   }
 
   if (answer == 9){
-    bool empty = queueIsEmpty();
-    if (bool == false){
-      cout << "No matches currently waiting operations." << endl;
-    }
-    else{
-      printMatches();
-    }
+    myTree.printMatches();
   }
 
   if (answer == 10){
-    Operate();
+    myTree.Operate();
   }
 
   if (answer == 11){
+	running = false;
     cout << "Goodbye!" << endl;
     return 0;
   }
-
+}
 }
