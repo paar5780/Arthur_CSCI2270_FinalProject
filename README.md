@@ -6,6 +6,7 @@ Our project matches organ donors to patients who need transplants. The program s
 
 How to Run:
 There are 11 options the user can select.
+
 1. Add a patient: When prompted, the user will enter the patient's name, organ needed, blood type, chance of survivability, time left, and location. The name should be the patient's last name. The organ needed can be heart, lungs, liver, pancreas, kidney, intestines, or head, and must not be capitalized. The blood type can be O, A, B, or AB, and must be capitalized. Chance of survivability should be between 0 and 100. Time left should be in hours. The location can be one of the following citites: New York City, Philadelphia, Atlanta, Denver, San Francisco, Dallas, Phoenix, Seattle, Honolulu, Chicago, Detroit, Los Angeles, Houston, Miami, Memphis, Cleveland, or Boise, and must be captialized. For example: "Smith", "heart", "O", "50", "Denver".
 
 2. Add a donor: Same as adding a patient, but the user will not be promted for survivability or time left since those attributes do not apply to donors. For example: "Jackson", "liver", "AB", "Boston".
