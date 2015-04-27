@@ -101,7 +101,7 @@ class PatientTree
         int queueTail;
         int successCount;
       	int failureCount;
-      	Pair* arrayQueue;
+      	Pair arrayQueue[10];
 		Patient* findPatientMatch(Donor*); //finds all possible patient donor matches
         Donor* findDonorMatch(Patient*);
         
@@ -112,10 +112,10 @@ class PatientTree
         void addEdge(std::string starting_city, std::string ending_city, int weight);
 
 
-        int findShortestDistance(int count, std::string starting_city, std::string ending_city); //finds shortest path between two cities
+        int findShortestDistance(std::string starting_city, std::string ending_city); //finds shortest path between two cities
        
         void chooseMatch(); //chooses best patient doner match
-        int Dijkstra(int count, std::string starting, std::string destination);
+        int Dijkstra(std::string starting, std::string destination);
 
 
 

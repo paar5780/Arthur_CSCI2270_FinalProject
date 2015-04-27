@@ -12,9 +12,10 @@ using namespace std;
 
 PatientTree::PatientTree(){
     //constructor
-    arrayQueue = new Pair[10];
 	successCount = 0;
 	failureCount = 0;
+	queueHead = 0;
+	queueTail = 0;
     for(int i = 0; i < 7; i++){
       for(int j = 0; j < 4; j++){
         PatientList[i][j] = NULL;
@@ -104,7 +105,7 @@ void PatientTree::buildGraph(){
   addEdge("Denver", "Phoenix", 2);
   addEdge("Denver", "Dallas", 2);
   addEdge("Denver", "New York", 4);
-  addEdge("Honolulu", "San Fransisco", 5);
+  addEdge("Honolulu", "San Francisco", 5);
   addEdge("Dallas", "Memphis", 1);
   addEdge("Dallas", "Houston", 1);
   addEdge("Dallas", "Atlanta", 2);
@@ -126,91 +127,64 @@ void PatientTree::buildGraph(){
   addEdge("Boston", "New York City", 1);
 }
 
-int PatientTree::Dijkstra(int count, std::string starting, std::string destination){
-
-    int minDistance;
-    vertex* minVertex;
-    vector <vertex *> solved;
-
-    //set visted to false, except on starting vertex
-    for(int i=0; i<vertices.size(); i++){
-        vertices[i].visited = false;
-        vertices[i].previous = NULL;
+int PatientTree::Dijkstra(string starting, string destination) {
+    
+    vector<vertex*> solved;
+    vertex *start, *dest;
+    for(int i=0; i < vertices.size();i++){
+		vertices[i].visited = false;
+		vertices[i].previous = NULL;
         vertices[i].distance = INT_MAX;
-        if(vertices[i].name == starting){
-            vertices[i].visited = true;
-            vertices[i].distance = 0;
-            solved.push_back(&vertices[i]);
+        if (starting == vertices[i].name) {
+            start = &vertices[i];
+        }
+        if (destination == vertices[i].name) {
+            dest = &vertices[i];
         }
     }
-
-    //find destination vertex
-    vertex *d = NULL;
-    for (int i=0; i<vertices.size(); i++){
-        if(vertices[i].name == destination){
-            d = &vertices[i];
-            break;
-        }
-    }
-
-    while (d->visited == false){
-        minDistance = INT_MAX; //arbitary large number
-        for (int i = 0; i < solved.size(); i++){ //for every solved vertex
-             for (int j = 0; j < solved[i]->adj.size(); j++){ //for every adjacent vertex
-                 if (solved[i]->adj[j].v->visited == false){ //if that adjacent vertex hasn't already been solved (visited)
-                    //calculate distance using u.distance and edge weight
-                    if (solved[i]->distance + solved[i]->adj[j].weight < solved[i]->adj[j].v->distance){
-						//calculate distance to orgin and replace if smaller than existing distance
-                        solved[i]->adj[j].v->distance = solved[i]->distance + solved[i]->adj[j].weight;
-                        solved[i]->adj[j].v->previous = solved[i];
+    start->visited = true;
+    start->distance = 0;
+    solved.push_back(start);
+    
+    while (!dest->visited) {
+        int minDistance = INT_MAX;
+        vertex *minVertex, *prevVertex;
+        for(int i = 0; i<solved.size(); i++){
+			vertex *u = solved[i];
+			for(int j=0; j < u->adj.size(); j++) {
+				if (!u->adj[j].v->visited){
+					int distance = u->distance + u->adj[j].weight;
+					if(minDistance > distance ){
+						minDistance = distance;
+                        minVertex = u->adj[j].v;
+                        prevVertex = u;
                     }
-                    //find minimum distance and store vertex information
-                    if (solved[i]->adj[j].v->distance < minDistance){
-                        minDistance = solved[i]->adj[j].v->distance;
-                        minVertex = solved[i]->adj[j].v;
-
-                    }
-                 }
-             }
+                }
+            }
         }
-        //update solved, adding minimum vertex
         solved.push_back(minVertex);
+        minVertex->distance = minDistance;
+        minVertex->previous = prevVertex;
         minVertex->visited = true;
-
     }
-    //find the path using previous pointer, put into a vector
-    vertex *vert = minVertex;
     vector <string> path;
-    while (vert) {
-        path.push_back(vert->name);
-        vert = vert->previous;
+    vertex *temp = dest;
+    while(temp!= NULL){
+		path.push_back(temp->name);
+        temp = temp->previous;
     }
-
-    cout << minDistance << ","; //print minimum distance
-    //return minDistance;
-
-	//print path by going through vector in reverse
-	//since the path was added to the vector in reverse in the first place
-    for (int i = path.size()-1; i >= 0; i--){
-        cout << path[i];
-        if (i != 0){
-            cout << ",";
-        }
-    }
-    return minDistance;
+    return dest->distance;
 }
 
 
-int PatientTree::findShortestDistance(int count, string city1, string city2){
+int PatientTree::findShortestDistance(string city1, string city2){
   //check the two cities
-  /*bool cont = checkCities(count, city1, city2);
-  if (cont == false){
-  	return;
-  }*/
+  if (city1 == city2){
+  	return 0;
+  }
   //use Dijkstra traverse to find and print the shortest distance
-  int distance = Dijkstra(count, city1, city2);
+  int distance = Dijkstra(city1, city2);
   return distance;
-  cout << endl;
 }
 
 int PatientTree::countPatients(){
@@ -386,8 +360,8 @@ void PatientTree::printDonors(){
 }
 
 Patient* PatientTree::findPatientMatch(Donor* d){
-  int js[4];
-  for (int k = 0; k < 4; k++){
+  int js[5];
+  for (int k = 0; k < 5; k++){
 	js[k] = 0;
   }
 
@@ -411,18 +385,20 @@ Patient* PatientTree::findPatientMatch(Donor* d){
 
   int best_score = INT_MIN;
   Patient* best = NULL;
+  Patient *p = NULL;
   int count = 0;
   int score;
   int time_taken;
 
   int m = 0;
   while (js[m] != 0){
-	Patient* p = PatientList[d->organ-1][js[m-1]];
+	  count = 0;
+	p = PatientList[d->organ-1][js[m]-1];
 	while (p != NULL){
 	  count++; //relative time on waiting list
-	  time_taken = findShortestDistance(18, p->location, d->location);
+	  time_taken = findShortestDistance(p->location, d->location);
 	  if (p->time_left >= time_taken){
-		score = p->survivability - count;
+		score = (p->survivability) - count;
 		if (score > best_score){
 		  best_score = score;
 		  best = p;
@@ -476,7 +452,7 @@ Donor* PatientTree::findDonorMatch(Patient *p){
 	count = 0;
 	Donor* d = DonorList[p->organ-1][js[m]-1];
 	while (d != NULL){
-	  time_taken = findShortestDistance(18, p->location, d->location);
+	  time_taken = findShortestDistance(p->location, d->location);
 	  if (p->time_left >= time_taken){
 		return d;
         cout << "A suitable donor was found!" << endl;
@@ -537,11 +513,12 @@ Patient* PatientTree::addPatient(string name, string organ, string blood_type, s
       }
       n->prev = x;
       x->next = n;
-
-      return x;
+		
+      return n;
   }
 
 Donor* PatientTree::addDonor(string name, string organ, string blood_type, string city){
+	bool cityfound = false;
       int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
       + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
       if(i == 0){
@@ -554,6 +531,17 @@ Donor* PatientTree::addDonor(string name, string organ, string blood_type, strin
           return NULL;
       }
 
+	 for(int k = 0; k < vertices.size(); k++){
+		if(vertices[k].name == city){
+			cityfound = true;
+        }
+	   }
+	   
+	   if(cityfound == false){
+		   cout << "City not found" << endl;
+		   return NULL;
+	   }
+	
       Donor *n = new Donor;
       n->name = name;
       n->organ = i;
@@ -564,8 +552,8 @@ Donor* PatientTree::addDonor(string name, string organ, string blood_type, strin
       Donor *x = DonorList[i-1][j-1];
       if(x == NULL){
           DonorList[i-1][j-1] = n;
-          cout << "Added " << n->name << " to spot " << i << "," << j << endl;
-          return x;
+          cout << "Added " << n->name << " to spot " << i-1 << "," << j-1 << endl;
+          return n;
       }
       while(x->next != NULL){
           x = x->next;
@@ -573,7 +561,8 @@ Donor* PatientTree::addDonor(string name, string organ, string blood_type, strin
       n->prev = x;
       x->next = n;
 
-      return x;
+		cout << n->name << endl;
+      return n;
   }
 
 void PatientTree::deletePatient(string name){
@@ -582,6 +571,11 @@ void PatientTree::deletePatient(string name){
               Patient *x = PatientList[i][j];
               while(x != NULL){
                   if(x->name == name){
+					  if(x->next == NULL and x->prev == NULL){
+						  DonorList[i][j] = NULL;
+						  delete x;
+						  return;
+					  }
                       if(x->next == NULL){
                           x->prev->next = NULL;
                           delete x;
@@ -613,8 +607,13 @@ void PatientTree::deleteDonor(string name){
               Donor *x = DonorList[i][j];
               while(x != NULL){
                   if(x->name == name){
+					  if(x->next == NULL and x->prev == NULL){
+						  DonorList[i][j] = NULL;
+						  delete x;
+						  return;
+					  }
                       if(x->next == NULL){
-                          x->prev->next = NULL;
+						  x->prev->next = NULL;
                           delete x;
                           return;
                       }
@@ -664,7 +663,7 @@ void PatientTree::enqueue(Pair match){ //we can do this bc we've declared push i
 Pair PatientTree::dequeue(){
   Pair match = arrayQueue[queueHead];
   queueHead++;
-	queueHead = queueHead % 10;
+  queueHead = queueHead % 10;
   return match;
 }
 
@@ -715,7 +714,7 @@ int main(){
 
   
 
-	PatientTree myTree;
+  PatientTree myTree;
   myTree.buildGraph();
   myTree.buildDonorList();
   myTree.buildPatientList();
@@ -818,8 +817,10 @@ int main(){
         Pair newPair;
         newPair.patient = newPatient->name;
         newPair.donor = donorMatch->name;
+        newPair.success_rate = newPatient->survivability;
         myTree.enqueue(newPair);
         myTree.deleteDonor(donorMatch->name);
+        myTree.deletePatient(newPatient->name);
       }
 
 
@@ -855,11 +856,12 @@ int main(){
       }
       else{
         Pair newPair;
-        Patient* foundPatient = myTree.findPatientMatch(newDonor);
-        newPair.patient = foundPatient->name;
+        newPair.patient = patientMatch->name;
         newPair.donor = newDonor->name;
+        newPair.success_rate = patientMatch->survivability;
         myTree.enqueue(newPair);
         myTree.deletePatient(patientMatch->name);
+        myTree.deleteDonor(newDonor->name);
       }
     }
 
@@ -898,11 +900,11 @@ int main(){
   }
 
   if (answer == 9){
-    //printMatches();
+    myTree.printMatches();
   }
 
   if (answer == 10){
-    //Operate();
+    myTree.Operate();
   }
 
   if (answer == 11){
