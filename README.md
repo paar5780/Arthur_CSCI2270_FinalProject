@@ -34,9 +34,7 @@ System Requirements:
 None.
 
 Group Members:
-Paige Arthur
-Evan Sidrow
-Michael Feller
+Paige Arthur, Evan Sidrow, Michael Feller
 
 Contributors:
 Andrew Dudney
