@@ -731,7 +731,7 @@ int main(){
 	int successRate;
 	int time;
 	while(!textFile.eof()){
-
+		
 		getline(textFile, line, ',');
 		name = line;
 
@@ -750,8 +750,9 @@ int main(){
 		getline(textFile, line);
 		time = atoi(line.c_str());
 
-		myTree.addPatient(name, organ, blood_type, city, time, successRate);
-
+		if(!textFile.eof()){
+			myTree.addPatient(name, organ, blood_type, city, time, successRate);
+		}
 	}
 
   while(running == true){
