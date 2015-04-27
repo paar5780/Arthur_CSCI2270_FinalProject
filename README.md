@@ -5,6 +5,7 @@ PROJECT SUMMARY:
 
 Our project matches organ donors to patients who need transplants. The program starts with a list of 100 patients and 0 donors. Each patient has the following attributes: organ needed, blood type, survivability (how likely it is they will survive the operation), time left (how many hours they have to get the organ before they pass away), and location (what city in the US they're in). The donor has the same attributes, minus the suvivability and time left. The user can input and delete a patient or donor. The program searches through all possible matches with the same organ and blood type. It calculates a score for each patient based on the time the patient has been waiting (aka their location in the list) and the patient's survivability. However, it will only look at patients who live close enough to the donor such that the organ can be transplanted to the patient before the patient passes away. A graph of US cities is used to determine this and a searching algoritm determines the shorest path between the donor's city and the patient's city. If a match is found when a donor or patient is added, the pair will be added to a queue. The user can then select "Operate", which will operate on the first pair in the queue and determine if the operation was a success depending on the patient's liklihood of survivability. The user can print the matches waiting to be operated on. They can also print the patients and donors waiting for a match. The user can also count the patients and the donors waiting for a match. 
 
+
 HOW TO RUN:
 
 There are 11 options the user can select.
@@ -29,20 +30,26 @@ There are 11 options the user can select.
 
 10. Operate: This will "operate" on a donor - patient match and will determine whether or not the operation was a sucess using a random function and the patient's liklihood of survivability. It does not require any input arguments. 
 
-Dependencies: 
+
+DEPENDENCIES:
+
 The text file containing the patients must be including in the appropriate folder so that the program can access it.
+
 
 SYSTEM REQUIREMENTS:
 
 None.
 
+
 GROUP MEMBERS:
 
 Paige Arthur, Evan Sidrow, Michael Feller
 
+
 CONTRIBUTORS:
 
 Andrew Dudney (not in 2270 class)
+
 
 OPEN ISSUES / BUGS:
 
