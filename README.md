@@ -9,10 +9,15 @@ Our project matches organ donors to patients who need transplants. It uses four 
 HOW TO RUN:
 
 The files accessed are as follows:
-main.cpp (main() function file)
+
+main.cpp (main function file)
+
 Patient_Donor_Database.cpp (function implementation file)
+
 Patient_Donor_Database.h (header file)
+
 patientList.txt (list of patients and their attributes)
+
 
 Once the program is running, there are 11 options the user can select.
 
