@@ -13,14 +13,15 @@ using namespace std;
 int main(){
 
 
-
-  PatientTree myTree;
-  myTree.buildGraph();
-  myTree.buildDonorList();
-  myTree.buildPatientList();
+	//Here we initialize our data structures
+    PatientTree myTree;
+    myTree.buildGraph();
+    myTree.buildDonorList();
+    myTree.buildPatientList();
 	bool running = true;
-
-  ifstream textFile;
+	
+	//The following block of code reads in the patient list (.txt file) and adds them all to the patient table
+    ifstream textFile;
 	textFile.open("patientList.txt");
 	string line;
 	string tempLine;
@@ -54,23 +55,23 @@ int main(){
 			myTree.addPatient(name, organ, blood_type, city, time, successRate);
 		}
 	}
-
+ 
   while(running == true){
     //build main menu
-    cout	<<	"======Main Menu====="	<<	endl;
-    cout	<<	"1. Add a patient"	<<	endl;
-    cout	<<	"2. Add a donor"	<<	endl;
-    cout  <<  "3. Delete a patient"   << endl;
-    cout  <<  "4. Delete a donor"  << endl;
-    cout  <<  "5. Count patients" << endl;
-    cout  <<  "6. Count donors" << endl;
-    cout  <<  "7. Print patients" << endl;
-    cout  <<  "8. Print donors" << endl;
-    cout  <<  "9. Print matches" << endl;
-    cout  <<  "10. Operate" << endl;
-    cout	<<	"11. Quit"	<<	endl;
+    cout	<<"======Main Menu====="<<	endl;
+    cout	<<"1. Add a patient"<<	endl;
+    cout	<<"2. Add a donor"<<	endl;
+    cout    <<"3. Delete a patient"<< endl;
+    cout    <<"4. Delete a donor"<< endl;
+    cout    <<"5. Count patients"<< endl;
+    cout    <<"6. Count donors"<< endl;
+    cout    <<"7. Print patients"<< endl;
+    cout    <<"8. Print donors"<< endl;
+    cout    <<"9. Print matches"<< endl;
+    cout    <<"10. Operate"<< endl;
+    cout	<<"11. Quit"<<	endl;
 
-
+  //takes user input
   int answer;
   cin >> answer;
   cin.ignore();
@@ -103,7 +104,10 @@ int main(){
     cout << "Enter location:" << endl;
     string location;
     getline(cin, location);
-
+	
+	//here we add the input information into the patient table, and then check if there is a donor
+	//already available to be matched with the patient. If there is, a Pair is created and the patient 
+	//is removed from the table.
     Patient* newPatient = myTree.addPatient(name, organ, blood_type, location, time_left, survivability);
     Donor* donorMatch = NULL;
     if(newPatient != NULL){
@@ -144,7 +148,9 @@ int main(){
     cout << "Enter location:" << endl;
     string location;
     getline(cin, location);
-
+	
+	//here we add the input information into the donor table and check for a suitable match in the patient table. 
+	//If a candidate is found, a Pair is made and the donor is removed from the table.
     Donor* newDonor = myTree.addDonor(name, organ, blood_type, location);
     Patient* patientMatch = NULL;
     if(newDonor != NULL){
@@ -172,44 +178,44 @@ int main(){
     cout << "Enter patient name:" << endl;
     string name;
     getline(cin, name);
-    myTree.deletePatient(name);
+    myTree.deletePatient(name);//deletes patient from patient table
   }
 
   if (answer == 4){
     cout << "Enter donor name:" << endl;
     string name;
     getline(cin, name);
-    myTree.deleteDonor(name);
+    myTree.deleteDonor(name);//deletes donor from donor table
   }
 
   if (answer == 5){
     int count = myTree.countPatients();
-    cout << "There are " << count << " patients waiting."<<endl;
+    cout << "There are " << count << " patients waiting."<<endl;//outputs the number of patients in the patient table
   }
 
   if (answer == 6){
     int count = myTree.countDonors();
-    cout << "There are " << count << " donors availible."<<endl;
+    cout << "There are " << count << " donors availible."<<endl;//outputs the number of donors in the donor table
   }
 
   if (answer == 7){
-    myTree.printPatients();
+    myTree.printPatients();//prints the list of patients and all their attributes
   }
 
   if (answer == 8){
-    myTree.printDonors();
+    myTree.printDonors();//prints the list of donors and all their attributes
   }
 
   if (answer == 9){
-    myTree.printMatches();
+    myTree.printMatches();//prints the list of matches made (that have not undergone sugery)
   }
 
   if (answer == 10){
-    myTree.Operate();
+    myTree.Operate();//Performs a surgery on the first Pair in the queue
   }
 
   if (answer == 11){
-	running = false;
+	running = false;//ends while loop, thus ending program
     cout << "Goodbye!" << endl;
     return 0;
   }
