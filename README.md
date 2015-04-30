@@ -8,7 +8,7 @@ Our project matches organ donors to patients who need transplants. It uses four 
 
 HOW TO RUN:
 
-The files accessed are as follows:
+The files accessed are as follows (and are stored in a folder in the repository):
 
 main.cpp (main function file)
 
@@ -78,3 +78,6 @@ Features we would like:
 Bugs:
 
 1. Sometimes the print matches function doesn't work and we're not sure why. It works most of the time but sometimes it won't print anything.
+
+
+If you can't get it running or have questions, feel free to email us at paar5780@colorado.edu.
