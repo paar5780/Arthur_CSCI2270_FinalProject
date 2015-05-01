@@ -71,7 +71,7 @@ Features we would like:
 
 1. Make it so the user can add cities (with edges!) to the graph.
  
-2. Allow the organs, locations, and blood types to not be case sensitive
+2. Allow the organs, locations, and blood types to not be case sensitive (ISSUE CLOSED)
 
 3. Make it so that as time passes (aka as operations are done), time passes and the patients' "time left" runs out.
 
