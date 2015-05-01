@@ -16,7 +16,7 @@ using namespace std;
 
 //Here we initialize our patient and donor tables by setting every space to NULL.
 //We also initialize a few global variables, namely the counts for operation successes and operation failures
-//as well as the head and tail of the operation queue.  
+//as well as the head and tail of the operation queue.
 PatientTree::PatientTree(){
     //constructor
 	successCount = 0;
@@ -36,7 +36,7 @@ PatientTree::~PatientTree(){
 }
 
 //The addVertex function is used in the creation of our city graph.
-//We are building a city graph in order to determine the shortest distance between donors 
+//We are building a city graph in order to determine the shortest distance between donors
 //and potential patients (each donor and patient has a location on the graph).
 void PatientTree::addVertex(std::string n){
 	//make sure it's not already in the graph
@@ -80,7 +80,7 @@ void PatientTree::addEdge(std::string v1, std::string v2, int weight){
 
 //Our buildGraph function utilizes our addVertex and addEdge functions.
 //We list all of the city names and distances (in hours taken to travel) in this function.
-//We considered writing a .txt file with a table of data, but decided against it. 
+//We considered writing a .txt file with a table of data, but decided against it.
 //Perhaps someone else can do this if they feel so inclined?
 void PatientTree::buildGraph(){
   //Graph g;
@@ -143,8 +143,8 @@ void PatientTree::buildGraph(){
   addEdge("Boston", "New York City", 1);
 }
 
-//Here is our Dijkstra function. No surprising capabilities- it is used to find shortest 
-//path between two cities within our graph. 
+//Here is our Dijkstra function. No surprising capabilities- it is used to find shortest
+//path between two cities within our graph.
 int PatientTree::Dijkstra(string starting, string destination) {
 
     vector<vertex*> solved;
@@ -261,7 +261,7 @@ return count;
 }
 
 //This function traverses the patient table and prints the data entered for every patient.
-//For ease of use, we are storing the data such as "organ needed" and blood-type as integers, 
+//For ease of use, we are storing the data such as "organ needed" and blood-type as integers,
 //so here we have to include 'if' statements in order to give outputs that are meaningful to the user.
 void PatientTree::printPatients(){
   //organs: heart, kidney, liver, lungs, pancreas, intestines, head
@@ -384,9 +384,9 @@ void PatientTree::printDonors(){
 }
 }
 
-//findPatientMatch is a function we use to search through the patient table and see if there are any 
+//findPatientMatch is a function we use to search through the patient table and see if there are any
 //suitable matches for a donor's organ. We call this whenever a new donor is added to the donor table (using the function addDonor).
-//If a suitable match is found, this function returns a pointer to the best candidate to recieve the organ. 
+//If a suitable match is found, this function returns a pointer to the best candidate to recieve the organ.
 Patient* PatientTree::findPatientMatch(Donor* d){
   int js[5];
   for (int k = 0; k < 5; k++){
@@ -446,7 +446,7 @@ Patient* PatientTree::findPatientMatch(Donor* d){
 }
 
 //This function does the same thing as findPatientMatch, however it searches the donor table for a match
-//whenever a new patient is added (using the addPatient function). It returns a pointer to the matching donor. 
+//whenever a new patient is added (using the addPatient function). It returns a pointer to the matching donor.
 Donor* PatientTree::findDonorMatch(Patient *p){
   int js[4];
   for (int k = 0; k < 4; k++){
@@ -498,14 +498,16 @@ Donor* PatientTree::findDonorMatch(Patient *p){
 //The addPatient function takes the input data for a new patient and adds them to the patient table.
 Patient* PatientTree::addPatient(string name, string organ, string blood_type, string city, int time_left, int survivability){
 	bool cityfound = false;
-      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
-      + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
+      int i = 1*((organ == "heart" || organ=="Heart")) + 2*((organ == "lungs" || organ == "Lungs")) + 3*((organ == "liver" || organ == "Liver"))
+      + 4*((organ == "pancreas" || organ == "Pancreas"))+ 5*((organ == "kidney" || organ == "Kidney"))
+      + 6*((organ == "intestines" || organ == "Intestines")) + 7*((organ == "head" || organ == "Head"));
       if(i == 0){
           cout << "Organ not found" << endl;
           // new
           return NULL;
       }
-      int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
+      int j = 1*(blood_type == "A"||blood_type == "a") + 2*(blood_type == "B"||blood_type == "b")
+      + 3*(blood_type == "AB"||blood_type == "ab") + 4*(blood_type == "O"||blood_type == "o");
       if(j == 0){
           cout << "Blood type not found" << endl;
           // new
@@ -551,13 +553,15 @@ Patient* PatientTree::addPatient(string name, string organ, string blood_type, s
 //The addDonor function does the same thing as the addPatient function, but with donors and the donor table.
 Donor* PatientTree::addDonor(string name, string organ, string blood_type, string city){
 	bool cityfound = false;
-      int i = 1*(organ == "heart") + 2*(organ == "lungs") + 3*(organ == "liver") + 4*(organ == "pancreas")
-      + 5*(organ == "kidney") + 6*(organ == "intestines") + 7*(organ == "head");
+      int i = 1*((organ == "heart" || organ=="Heart")) + 2*((organ == "lungs" || organ == "Lungs")) + 3*((organ == "liver" || organ == "Liver"))
+      + 4*((organ == "pancreas" || organ == "Pancreas"))+ 5*((organ == "kidney" || organ == "Kidney"))
+      + 6*((organ == "intestines" || organ == "Intestines")) + 7*((organ == "head" || organ == "Head"));
       if(i == 0){
           cout << "Organ not found" << endl;
           return NULL;
       }
-      int j = 1*(blood_type == "A") + 2*(blood_type == "B") + 3*(blood_type == "AB") + 4*(blood_type == "O");
+      int j = 1*(blood_type == "A"||blood_type == "a") + 2*(blood_type == "B"||blood_type == "b")
+       + 3*(blood_type == "AB"||blood_type == "ab") + 4*(blood_type == "O"||blood_type == "o");
       if(j == 0){
           cout << "Blood type not found" << endl;
           return NULL;
@@ -598,8 +602,8 @@ Donor* PatientTree::addDonor(string name, string organ, string blood_type, strin
   }
 
 //The deletePatient function removes a patient from the patient table. We call this function when the findPatientMatch
-//or findDonorMatch functions match a patient with a donor. You can also manually delete patients from the table, as seen in 
-//our main menu. 
+//or findDonorMatch functions match a patient with a donor. You can also manually delete patients from the table, as seen in
+//our main menu.
 void PatientTree::deletePatient(string name){
       for(int i = 0; i < 7; i++){
           for(int j = 0; j < 4; j++){
@@ -693,7 +697,7 @@ void PatientTree::buildDonorList(){
 }
 
 //When a patient is matched with a donor (or vice versa), a Pair struct is created. This struct is then placed into
-//an operation queue using this function: enqueue. The Pair then awaits surgery. This is a first-in, first-out queue. 
+//an operation queue using this function: enqueue. The Pair then awaits surgery. This is a first-in, first-out queue.
 void PatientTree::enqueue(Pair match){ //we can do this bc we've declared push in header
 	arrayQueue[queueTail] = match;
 	queueTail++;
@@ -738,11 +742,11 @@ void PatientTree::printMatches(){
     }
 }
 
-//This function is relatively unique. When called, the operate function "performs" a surgery. It takes the first Pair 
-//in the queue, reads the included "survivability" value (which is simply a success rate for the surgery), and then 
-//chooses whether the operation was a success or a failure, using the success rate as a probability. If the surgery is 
+//This function is relatively unique. When called, the operate function "performs" a surgery. It takes the first Pair
+//in the queue, reads the included "survivability" value (which is simply a success rate for the surgery), and then
+//chooses whether the operation was a success or a failure, using the success rate as a probability. If the surgery is
 //a success, it adds one to the global successCount counter. Otherwise, it adds one to the failurCount. Once the surgery is done,
-//the Pair is dequeued, and the next Pair is at the top of the queue, awaiting surgery. 
+//the Pair is dequeued, and the next Pair is at the top of the queue, awaiting surgery.
 void PatientTree::Operate(){
   Pair operatedPair;
 	int successChance = arrayQueue[queueHead].success_rate;
