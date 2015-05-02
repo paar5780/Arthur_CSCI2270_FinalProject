@@ -19,7 +19,7 @@ int main(){
     myTree.buildDonorList();
     myTree.buildPatientList();
 	bool running = true;
-	
+
 	//The following block of code reads in the patient list (.txt file) and adds them all to the patient table
     ifstream textFile;
 	textFile.open("patientList.txt");
@@ -55,7 +55,7 @@ int main(){
 			myTree.addPatient(name, organ, blood_type, city, time, successRate);
 		}
 	}
- 
+
   while(running == true){
     //build main menu
     cout	<<"======Main Menu====="<<	endl;
@@ -104,9 +104,9 @@ int main(){
     cout << "Enter location:" << endl;
     string location;
     getline(cin, location);
-	
+
 	//here we add the input information into the patient table, and then check if there is a donor
-	//already available to be matched with the patient. If there is, a Pair is created and the patient 
+	//already available to be matched with the patient. If there is, a Pair is created and the patient
 	//is removed from the table.
     Patient* newPatient = myTree.addPatient(name, organ, blood_type, location, time_left, survivability);
     Donor* donorMatch = NULL;
@@ -148,8 +148,8 @@ int main(){
     cout << "Enter location:" << endl;
     string location;
     getline(cin, location);
-	
-	//here we add the input information into the donor table and check for a suitable match in the patient table. 
+
+	//here we add the input information into the donor table and check for a suitable match in the patient table.
 	//If a candidate is found, a Pair is made and the donor is removed from the table.
     Donor* newDonor = myTree.addDonor(name, organ, blood_type, location);
     Patient* patientMatch = NULL;
@@ -218,6 +218,11 @@ int main(){
 	running = false;//ends while loop, thus ending program
     cout << "Goodbye!" << endl;
     return 0;
+  }
+  //fixing an issue found by a4nacation - this issue is about putting in a number for the menu that isn't an option
+  //(i.e. anything > 11) does nothing and should maybe provide an error message to the user
+  if (answer > 11){
+    cout<<"Not a valid selection. Pick a valid number."<<endl;
   }
 }
 }
