@@ -19,7 +19,9 @@ Patient_Donor_Database.h (header file)
 patientList.txt (list of patients and their attributes)
 
 
-Once the program is running, there are 11 options the user can select.
+Simply Compile the main file normally with the implementation and header files in the same folder, and then run it. 
+
+Once the program is running, there are 11 options the user can select:
 
 1. Add a patient: When prompted, the user will enter the patient's name, organ needed, blood type, chance of survivability, time left, and location. The name should be the patient's last name. The organ needed can be heart, lungs, liver, pancreas, kidney, intestines, or head, and must not be capitalized. The blood type can be O, A, B, or AB, and must be capitalized. Chance of survivability should be between 0 and 100. Time left should be in hours. The location can be one of the following citites: New York City, Philadelphia, Atlanta, Denver, San Francisco, Dallas, Phoenix, Seattle, Honolulu, Chicago, Detroit, Los Angeles, Houston, Miami, Memphis, Cleveland, or Boise, and must be captialized. For example: "Smith", "heart", "O", "50", "Denver".
 
