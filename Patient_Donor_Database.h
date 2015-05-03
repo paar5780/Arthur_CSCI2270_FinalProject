@@ -100,6 +100,7 @@ class PatientTree
         Pair dequeue();//removes a Pair from the queue (first-in, first-out).
         bool queueIsFull();//checks if queue is full
         bool queueIsEmpty();//checks if queue is empty
+        int printOrganQuantity(std::string organ); //prints how many patients need a certain type of organ
 
         int queueSize;
         int queueHead;
