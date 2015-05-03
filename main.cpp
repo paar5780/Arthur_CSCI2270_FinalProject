@@ -70,8 +70,9 @@ int main(){
     cout    <<"7. Print patients"<< endl;
     cout    <<"8. Print donors"<< endl;
     cout    <<"9. Print matches"<< endl;
-    cout    <<"10. Operate"<< endl;
-    cout	<<"11. Quit"<<	endl;
+    cout    <<"10. Print quantity requested of organ"<<endl;
+    cout    <<"11. Operate"<< endl;
+    cout	<<"12. Quit"<<	endl;
 
   //takes user input
   int answer;
@@ -215,12 +216,23 @@ int main(){
   if (answer == 9){
     myTree.printMatches();//prints the list of matches made (that have not undergone sugery)
   }
-
   if (answer == 10){
-    myTree.Operate();//Performs a surgery on the first Pair in the queue
+    string organ;
+    int organInt;
+    cout<<"Enter organ type"<<endl;
+    getline(cin,organ);
+    int numRequested = myTree.printOrganQuantity(organ);//prints the list of matches made (that have not undergone sugery)
+    if (numRequested != -1) {
+    cout<<"There are "<<numRequested<<" requests for "<<organ<<"."<<endl;
+    }
+    else { cout<<"No such organ found"<<endl; }
   }
 
   if (answer == 11){
+    myTree.Operate();//Performs a surgery on the first Pair in the queue
+  }
+
+  if (answer == 12){
 	running = false;//ends while loop, thus ending program
     cout << "Goodbye!" << endl;
     return 0;
